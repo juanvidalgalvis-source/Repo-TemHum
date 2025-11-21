@@ -4,52 +4,62 @@ Módulo encargado de manejar la conexión y operaciones con la base de datos Mar
 
 En esta fase solo contiene la estructura base. La lógica será completada
 en tareas posteriores.
+
+Gestión de base de datos: inserción y consultas.
 """
 
-# import mariadb
-# import sys
-# import config
+import mariadb
+import datetime
+import config
+
+def get_connection():
+    """Crea y retorna una conexión a MariaDB."""
+    try:
+        conn = mariadb.connect(
+            host=config.DB_HOST,
+            user=config.DB_USER,
+            password=config.DB_PASSWORD,
+            database=config.DB_NAME,
+            port=config.DB_PORT
+        )
+        return conn
+    except mariadb.Error as e:
+        print("❌ Error al conectar a MariaDB:", e)
+        return None
 
 
-# class DatabaseManager:
-#     """
-#     Clase para manejar la conexión con MariaDB y ejecutar operaciones.
-#     """
+def insert_record(temperature, humidity):
+    """Inserta un registro en la tabla lecturas."""
+    conn = get_connection()
+    if conn is None:
+        print("❌ No se puede insertar: conexión fallida.")
+        return False
 
-#     def __init__(self):
-#         self.conn = None
-#         self.cursor = None
+    try:
+        cursor = conn.cursor()
 
-#     def conectar(self):
-#         """
-#         Establece la conexión a la base de datos.
-#         (Implementación pendiente)
-#         """
-#         pass
+        query = """
+        INSERT INTO lecturas (temperatura, humedad, fecha_hora)
+        VALUES (?, ?, ?)
+        """
 
-#     def insertar_datos(self, temperatura, humedad):
-#         """
-#         Inserta una nueva lectura en la base de datos.
-#         (Implementación pendiente)
-#         """
-#         pass
+        current_time = datetime.datetime.now()
 
-#     def obtener_ultimos_registros(self, limite=10):
-#         """
-#         Retorna los últimos registros almacenados.
-#         (Implementación pendiente)
-#         """
-#         pass
+        cursor.execute(query, (temperature, humidity, current_time))
 
-#     def cerrar_conexion(self):
-#         """
-#         Cierra la conexión con la base de datos.
-#         (Implementación pendiente)
-#         """
-#         pass
+        conn.commit()
+        print(f"✅ Registro insertado: T={temperature}°C | H={humidity}% | {current_time}")
+
+        return True
+
+    except mariadb.Error as e:
+        print("❌ Error al insertar registro:", e)
+        return False
+
+    finally:
+        conn.close()
+        print("🔒 Conexión cerrada.")
 
 
-# # Ejecución independiente para pruebas básicas
-# if __name__ == "__main__":
-#     db = DatabaseManager()
-#     print("Módulo db_manager cargado correctamente (versión esqueleto).")
+if __name__ == "__main__":
+    print("Este módulo gestiona la base de datos.")

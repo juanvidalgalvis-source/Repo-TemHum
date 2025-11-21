@@ -1,2 +1,25 @@
+# --- Python cache ---
 __pycache__/
 *.pyc
+
+# --- Entornos virtuales ---
+venv/
+env/
+
+# --- Logs ---
+logs/
+*.log
+
+# --- Archivos sensibles ---
+config.py
+
+# --- Archivos de sistema ---
+.DS_Store
+Thumbs.db
+
+# --- VSCode config ---
+.vscode/
+
+# --- Archivos temporales ---
+*.tmp
+*.bak

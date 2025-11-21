@@ -34,11 +34,11 @@ MODO_SIMULACION = True
 # ================================
 # CONFIGURACIÓN DE BASE DE DATOS
 # ================================
-# DB_HOST = "localhost"
-# DB_USER = "root"
-# DB_PASSWORD = "tu_contraseña"
-# DB_NAME = "raspberry_temp_hum"
-# DB_PORT = 3306
+DB_HOST = "localhost"
+DB_USER = "root"
+DB_PASSWORD = "root"
+DB_NAME = "raspberry_temp_hum"
+DB_PORT = 3306
 
 
 # ================================
