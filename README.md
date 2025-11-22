@@ -1,4 +1,4 @@
- Proyecto RaspBerry Temp-Hum
+# Proyecto RaspBerry Temp-Hum
 
 *Proyecto académico* que implementa un sistema embebido para leer temperatura y humedad usando Raspberry Pi, GrovePi y un sensor DHT. Los datos se almacenan en MariaDB y el sistema está organizado con una arquitectura modular para facilitar la evolución por versiones.
 
@@ -55,7 +55,6 @@ db/tablas.sql
 ```
 Esto crea la base de datos raspberry_temp_hum y la tabla lecturas.
 
-Autor
-
+# Autor
 Juan Felipe Vidal Galvis
 Proyecto “RaspBerry Temp-Hum” — Universidad del Valle
