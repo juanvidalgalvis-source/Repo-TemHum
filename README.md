@@ -56,5 +56,5 @@ db/tablas.sql
 Esto crea la base de datos raspberry_temp_hum y la tabla lecturas.
 
 # Autor
-Juan Felipe Vidal Galvis
+Juan Felipe Vidal Galvis /
 Proyecto “RaspBerry Temp-Hum” — Universidad del Valle
