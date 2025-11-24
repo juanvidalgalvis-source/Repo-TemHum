@@ -1,4 +1,3 @@
-# sistema/sensor_real.py
 
 import grovepi
 import time

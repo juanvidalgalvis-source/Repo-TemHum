@@ -10,6 +10,7 @@ y la visualización en la interfaz de usuario.
 # ==========================
 
 import config
+import time
 
 from sistema.sensor_sim import get_fake_sensor_data # Importar función del sensor simulado
 from config import logger, INTERVALO_LECTURA # Importar intervalo de lectura
@@ -22,7 +23,7 @@ if config.MODO_SIMULACION:
     from sistema.sensor_sim import get_fake_sensor_data as leer_sensor
 else:
     # Modo real (hardware)
-    from sistema.sensor_real import leer_estable as leer_sensor
+    from sistema.sensor_real import read_stable as leer_sensor
 
 # ==========================
 # Función principal

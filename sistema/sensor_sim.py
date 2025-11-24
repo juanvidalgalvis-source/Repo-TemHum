@@ -26,6 +26,11 @@ def get_fake_sensor_data():     # Retorna valores simulados de temperatura y hum
     return temperatura, humedad
 
 
+# Alias para mantener consistencia con sensor_real.py
+def read_stable():
+    return get_fake_sensor_data()
+
+
 # # Para probarlo de forma independiente
 if __name__ == "__main__":  # Solo corre cuando se ejecuta el archivo de forma independiente  
     temp, hum = get_fake_sensor_data()
