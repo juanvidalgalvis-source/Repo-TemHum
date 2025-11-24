@@ -11,39 +11,59 @@ y la visualización en la interfaz de usuario.
 
 import config
 
-# Importar función del sensor simulado
-from sistema.sensor_sim import get_fake_sensor_data
+from sistema.sensor_sim import get_fake_sensor_data # Importar función del sensor simulado
+from config import logger, INTERVALO_LECTURA # Importar intervalo de lectura
 
+# -----------------------------
+# Selección dinámica del sensor
+# -----------------------------
+if config.MODO_SIMULACION:
+    # Modo simulación (sensor falso)
+    from sistema.sensor_sim import get_fake_sensor_data as leer_sensor
+else:
+    # Modo real (hardware)
+    from sistema.sensor_real import leer_estable as leer_sensor
 
 # ==========================
 # Función principal
 # ==========================
 
-def run_sistem():
-    print("Ejecutando sistema en modo SIMULACIÓN...\n")
+def run_system():
+    logger.info("===== INICIO DEL SISTEMA =====")
+    logger.info(f"Modo simulación: {config.MODO_SIMULACION}")
 
-    try: 
-        ### Cuando funciona bien
-        # Obtener datos simulados del sensor
-        temperatura, humedad = get_fake_sensor_data()
+    print("\n====================================")
+    if config.MODO_SIMULACION:
+        print(" Ejecutando en MODO SIMULACIÓN")
+    else:
+        print(" Ejecutando en MODO SENSOR REAL (GrovePi)")
+    print("====================================\n")
 
-        # Mostrar datos en consola 
-        print(f"Temperatura simulada: {temperatura}°C")
-        print(f"Humedad simulada: {humedad}%\n")
+    # -------------------------
+    # Bucle principal del sistema
+    # -------------------------
+    while True:
+        try:
+            temperatura, humedad = leer_sensor()
 
-    except Exception as e:  ### Cuando no funciona bien
-        # Manejo básico de errores
-        print("⚠️  Advertencia: Fallo al obtener datos del sensor simulado.")
-        print(f"Detalles del error: {e}\n")
+            if temperatura is None or humedad is None:
+                logger.warning("Lectura inválida, esperando siguiente intento...")
+            else:
+                print(f"Temperatura: {temperatura}°C — Humedad: {humedad}%")
+                logger.info(f"Lectura válida → Temp={temperatura}, Hum={humedad}")
 
-# ==========================
-# Punto de entrada
-# ==========================
+            time.sleep(INTERVALO_LECTURA)
+
+        except KeyboardInterrupt:
+            print("\nSistema detenido por el usuario.")
+            logger.info("Sistema detenido manualmente.")
+            break
+
+        except Exception as e:
+            print(f"⚠️ Error inesperado: {e}")
+            logger.error(f"Error inesperado en main.py: {e}")
+
 
 if __name__ == "__main__":
-    if config.MODO_SIMULACION:
-        run_sistem()
-    else:
-        print("Error: main.py aún no está configurado para el sensor real.")
-
+    run_system()
 

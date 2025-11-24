@@ -17,18 +17,19 @@ Aquí se definen todas las constantes:
 # False → Usar GrovePi + Sensor DHT real
 MODO_SIMULACION = True
 
+# TEST_MODE = True → NO inserta datos en BD (solo imprime en consola)
+# TEST_MODE = False → Inserta en BD
+TEST_MODE = True
 
-# # ================================
-# # CONFIGURACIÓN DEL SENSOR
-# # ================================
-# # Puerto del GrovePi donde está conectado el sensor DHT
-# DHT_PORT = 7
+# ================================
+# CONFIGURACIÓN DEL SENSOR (HU6.6)
+# ================================
 
-# # Tipo de sensor (DHT11 = 0, DHT22 = 1)
-# DHT_TIPO = 0
+DHT_PORT = 7    # Puerto del GrovePi donde está conectado el sensor DHT
+DHT_TYPE = 0    # Tipo de sensor ((azul) DHT11 = 0, (blanco) DHT22 = 1)
 
-# # Intervalo entre lecturas (en segundos)
-# INTERVALO_LECTURA = 5
+# Intervalo entre lecturas (en segundos)
+INTERVALO_LECTURA = 5
 
 
 # ================================
@@ -55,3 +56,33 @@ DB_PORT = 3306
 # CONFIGURACIÓN DE INTERFAZ
 # ================================
 #MOSTRAR_EN_CONSOLA = True
+
+
+# ================================
+# RANGOS DE VALIDACIÓN
+# ================================
+TEMP_MIN = -10
+TEMP_MAX = 60
+
+HUM_MIN = 0
+HUM_MAX = 100
+
+
+# ===========================================
+# LOGGING CENTRALIZADO (HU6.7)
+# ===========================================
+import logging
+import os
+os.makedirs("logs", exist_ok=True) # Asegura que la carpeta de logs exista
+
+LOG_FILE = "logs/sensor.log"    # Ruta del archivo de log
+LOG_LEVEL = logging.INFO   # Nivel de logging   # Cambiable a DEBUG en ramas C
+
+# Inicialización global del logger
+logging.basicConfig(
+    filename=LOG_FILE,
+    level=LOG_LEVEL,
+    format="%(asctime)s - %(levelname)s - %(message)s")
+
+# Logger global accesible desde TODOS los módulos
+logger = logging.getLogger("sensor_system")
