@@ -4,32 +4,49 @@
 
 ## Estado del proyecto
 
-Versión actual: V1.0 — Simulación
+Versión actual: V1.1 — Simulación (con intento de implementacion de hardware)
 
-* Lecturas simuladas.
-* Inserción de datos en MariaDB.
-* Pruebas de conexión.
+* Lecturas simuladas (sensor_sim.py).
+* Lectura real preliminar del sensor DHT (sensor_real.py).
+* Validación de lecturas (sensor_errors.py).
+* Inserción de datos en MariaDB (db_manager.py).
+* Pruebas unitarias (todos los archivos comenzados por _test_).
+* Logging centralizado (logs/sensor.log)
 * Estructura modular establecida.
 
-### En desarrollo: V2 — Pruebas de hardware
-Incluye lectura real del sensor, comparación de configuraciones y creación de la versión estable v2-hw.
+### En desarrollo:
+Carpeta interfaz/. Ajustes finales de config.py.
+Integración con el código oficial del profesor (será parte de la Versión 2, aún no disponible).
+(Aunque el código existe, aún no forma parte de la versión estable por falta de pruebas en laboratorio).
 
-## Arquitectura del proyecto: V1.0
+## Arquitectura del proyecto: V1.1
 ```
 Repo-TemHum/
+│  .gitignore
 │  main.py
-│  config.py
-│
-├─ sistema/
-│   sensor_sim.py
+│  README.md
+│  test_insert.py
+│  test_sensor_import.py
 │
 ├─ db/
-│   db_manager.py
-│   test_connection.py
-│   tablas.sql
+│   ├─ __init__.py
+│   ├─ db_manager.py
+│   ├─ tablas.sql
+│   └─ test_connection.py
 │
 ├─ interfaz/
-└─ logs/
+│   (vacía)
+│
+├─ logs/
+│   (vacía, se llena al ejecutar el sistema)
+│
+└─ sistema/
+    ├─ __init__.py
+    ├─ sensor_errors.py
+    ├─ sensor_real.py
+    ├─ sensor_sim.py
+    └─ test_validators.py
+
 ```
 
 ## Tecnologías
@@ -42,11 +59,11 @@ Repo-TemHum/
 * VSCode (escritura del proyecto)
 
 ### Ejecución
-Modo simulación:
+Modo simulación (modo actual estable):
 ```
 python main.py
 ```
-Configurar modo hardware real editando config.py [Por implementar].
+Modo hardware real: Implementado parcialmente en sensor_real.py, pero aún no probado ni validado, por lo que no forma oficialmente parte de V1.1.
 
 ### Base de datos
 Ejecutar el script:
@@ -55,6 +72,11 @@ db/tablas.sql
 ```
 Esto crea la base de datos raspberry_temp_hum y la tabla lecturas.
 
+### Scripts relevantes
+* db_manager.py — funciones de conexión e inserción
+* test_connection.py — prueba directa de conexión
+* test_insert.py — inserción de datos simulados
+
 # Autor
 Juan Felipe Vidal Galvis /
-Proyecto “RaspBerry Temp-Hum” — Universidad del Valle
+Proyecto academico “RaspBerry Temp-Hum” — Universidad del Valle
