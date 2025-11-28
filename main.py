@@ -11,8 +11,6 @@ y la visualización en la interfaz de usuario.
 
 import config
 import time
-
-from sistema.sensor_sim import get_fake_sensor_data # Importar función del sensor simulado
 from config import logger, INTERVALO_LECTURA # Importar intervalo de lectura
 
 # -----------------------------
@@ -23,7 +21,7 @@ if config.MODO_SIMULACION:
     from sistema.sensor_sim import get_fake_sensor_data as leer_sensor
 else:
     # Modo real (hardware)
-    from sistema.sensor_real import read_stable as leer_sensor
+    from sistema.sensor_real import read as leer_sensor
 
 # ==========================
 # Función principal
@@ -45,7 +43,15 @@ def run_system():
     # -------------------------
     while True:
         try:
-            temperatura, humedad = leer_sensor()
+            lectura = leer_sensor()
+
+            if lectura is None or len(lectura) != 2:
+                logger.warning("Lectura inválida (None o incompleta)")
+                time.sleep(INTERVALO_LECTURA)
+                continue
+
+
+            temperatura, humedad = lectura
 
             if temperatura is None or humedad is None:
                 logger.warning("Lectura inválida, esperando siguiente intento...")
