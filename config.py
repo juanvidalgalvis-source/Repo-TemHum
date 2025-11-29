@@ -29,7 +29,7 @@ DHT_PORT = 7    # Puerto del GrovePi donde está conectado el sensor DHT
 DHT_TYPE = 0    # Tipo de sensor ((azul) DHT11 = 0, (blanco) DHT22 = 1)
 
 # Intervalo entre lecturas (en segundos)
-INTERVALO_LECTURA = 5
+INTERVALO_LECTURA = 3
 
 
 # ================================

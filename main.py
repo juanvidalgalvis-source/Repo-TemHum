@@ -1,75 +1,44 @@
-"""
-main.py
-Archivo principal del sistema RaspBerry temp-hum.
-Coordina la lectura del sensor, el almacenamiento en la base de datos
-y la visualización en la interfaz de usuario.
-"""
-
-# ==========================
-# Importación de módulos
-# ==========================
-
 import config
 import time
-from config import logger, INTERVALO_LECTURA # Importar intervalo de lectura
 
-# -----------------------------
-# Selección dinámica del sensor
-# -----------------------------
+# Seleccionar la implementación del sensor según el modo
 if config.MODO_SIMULACION:
-    # Modo simulación (sensor falso)
     from sistema.sensor_sim import get_fake_sensor_data as leer_sensor
 else:
-    # Modo real (hardware)
     from sistema.sensor_real import read as leer_sensor
 
-# ==========================
-# Función principal
-# ==========================
+def run_system(): # Función principal del sistema
+    config.logger.info("Iniciando sistema")
+    config.logger.info("Modo simulacion activado" if config.MODO_SIMULACION else "Modo sensor real activado")
 
-def run_system():
-    logger.info("===== INICIO DEL SISTEMA =====")
-    logger.info(f"Modo simulación: {config.MODO_SIMULACION}")
-
-    print("\n====================================")
+    print("====================================")
     if config.MODO_SIMULACION:
-        print(" Ejecutando en MODO SIMULACIÓN")
+        print("Ejecutando en MODO SIMULACION")
     else:
-        print(" Ejecutando en MODO SENSOR REAL (GrovePi)")
-    print("====================================\n")
+        print("Ejecutando en MODO SENSOR REAL")
+    print("====================================")
 
-    # -------------------------
-    # Bucle principal del sistema
-    # -------------------------
-    while True:
+    # Bucle principal de lectura de datos
+    while True: 
         try:
-            lectura = leer_sensor()
+            temperatura, humedad = leer_sensor() 
 
-            if lectura is None or len(lectura) != 2:
-                logger.warning("Lectura inválida (None o incompleta)")
-                time.sleep(INTERVALO_LECTURA)
-                continue
-
-
-            temperatura, humedad = lectura
-
-            if temperatura is None or humedad is None:
-                logger.warning("Lectura inválida, esperando siguiente intento...")
+            if temperatura is None or humedad is None: # Validación de datos
+                config.logger.warning("Lectura invalida")
             else:
-                print(f"Temperatura: {temperatura}°C — Humedad: {humedad}%")
-                logger.info(f"Lectura válida → Temp={temperatura}, Hum={humedad}")
+                print("Temperatura:", temperatura, "Humedad:", humedad)
+                config.logger.info("Lectura valida")
 
-            time.sleep(INTERVALO_LECTURA)
+            time.sleep(config.INTERVALO_LECTURA) # Esperar antes de la siguiente lectura
 
         except KeyboardInterrupt:
-            print("\nSistema detenido por el usuario.")
-            logger.info("Sistema detenido manualmente.")
+            print("Sistema detenido por el usuario.")
+            config.logger.info("Sistema detenido manualmente")
             break
 
         except Exception as e:
-            print(f"⚠️ Error inesperado: {e}")
-            logger.error(f"Error inesperado en main.py: {e}")
-
+            print("Error inesperado:", e)
+            config.logger.error("Error inesperado en main.py")
 
 if __name__ == "__main__":
     run_system()
