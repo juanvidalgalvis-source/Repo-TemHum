@@ -8,7 +8,7 @@ en tareas posteriores.
 Gestión de base de datos: inserción y consultas.
 """
 
-import mariadb
+import MySQLdb as mariadb
 import datetime
 import config
 
@@ -18,13 +18,13 @@ def get_connection():
         conn = mariadb.connect(
             host=config.DB_HOST,
             user=config.DB_USER,
-            password=config.DB_PASSWORD,
-            database=config.DB_NAME,
+            passwd=config.DB_PASSWORD,
+            db=config.DB_NAME,
             port=config.DB_PORT
         )
         return conn
     except mariadb.Error as e:
-        print("❌ Error al conectar a MariaDB:", e)
+        print("Error al conectar a MariaDB:", e)
         return None
 
 
@@ -32,7 +32,7 @@ def insert_record(temperature, humidity):
     """Inserta un registro en la tabla lecturas."""
     conn = get_connection()
     if conn is None:
-        print("❌ No se puede insertar: conexión fallida.")
+        print("No se puede insertar: conexión fallida.")
         return False
 
     try:
@@ -40,7 +40,7 @@ def insert_record(temperature, humidity):
 
         query = """
         INSERT INTO lecturas (temperatura, humedad, fecha_hora)
-        VALUES (?, ?, ?)
+        VALUES (%s, %s, %s)
         """
 
         current_time = datetime.datetime.now()
@@ -48,17 +48,17 @@ def insert_record(temperature, humidity):
         cursor.execute(query, (temperature, humidity, current_time))
 
         conn.commit()
-        print(f"✅ Registro insertado: T={temperature}°C | H={humidity}% | {current_time}")
+        print("Registro insertado: T={}°C | H={}% | {}".format(temperature, humidity, current_time))
 
         return True
 
     except mariadb.Error as e:
-        print("❌ Error al insertar registro:", e)
+        print("Error al insertar registro:", e)
         return False
 
     finally:
         conn.close()
-        print("🔒 Conexión cerrada.")
+        print("Conexion cerrada.")
 
 
 if __name__ == "__main__":

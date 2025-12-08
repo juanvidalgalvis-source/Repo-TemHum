@@ -15,11 +15,11 @@ Aquí se definen todas las constantes:
 # ================================
 # True  → Usar valores simulados (sin hardware)
 # False → Usar GrovePi + Sensor DHT real
-MODO_SIMULACION = True
+MODO_SIMULACION = False
 
 # TEST_MODE = True → NO inserta datos en BD (solo imprime en consola)
 # TEST_MODE = False → Inserta en BD
-TEST_MODE = True
+TEST_MODE = False
 
 # ================================
 # CONFIGURACIÓN DEL SENSOR (HU6.6)
@@ -36,9 +36,9 @@ INTERVALO_LECTURA = 3
 # CONFIGURACIÓN DE BASE DE DATOS
 # ================================
 DB_HOST = "localhost"
-DB_USER = "root"
-DB_PASSWORD = "root"
-DB_NAME = "raspberry_temp_hum"
+DB_USER = "TempHum_user"
+DB_PASSWORD = "1234TH"
+DB_NAME = "RaspberryTempHum"
 DB_PORT = 3306
 
 

@@ -32,7 +32,7 @@ def read_stable():
 
 
 # # Para probarlo de forma independiente
-if __name__ == "__main__":  # Solo corre cuando se ejecuta el archivo de forma independiente  
+if __name__ == "__main__":  # Solo corre cuando se ejecuta el archivo de forma independiente
     temp, hum = get_fake_sensor_data()
-    print(f"Temperatura simulada: {temp}°C")
-    print(f"Humedad simulada: {hum}%")
+    print("Temperatura simulada: {}°C".format(temp))
+    print("Humedad simulada: {}%".format(hum))

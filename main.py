@@ -1,5 +1,6 @@
 import config
 import time
+from db.db_manager import insert_record
 
 # Seleccionar la implementación del sensor según el modo
 if config.MODO_SIMULACION:
@@ -28,6 +29,8 @@ def run_system(): # Función principal del sistema
             else:
                 print("Temperatura:", temperatura, "Humedad:", humedad)
                 config.logger.info("Lectura valida")
+                if not config.TEST_MODE:
+                    insert_record(temperatura, humedad)
 
             time.sleep(config.INTERVALO_LECTURA) # Esperar antes de la siguiente lectura
 

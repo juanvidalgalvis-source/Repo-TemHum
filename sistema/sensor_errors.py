@@ -60,7 +60,7 @@ def validate_range(temp, hum):
         temp = float(temp)
         hum = float(hum)
     except (TypeError, ValueError):
-        logging.error(f"Lectura inválida: valores no numéricos → temp={temp}, hum={hum}")
+        logging.error("Lectura inválida: valores no numéricos → temp=%s, hum=%s" % (temp, hum))
         return False
 
     # -----------------------------------------
@@ -74,11 +74,11 @@ def validate_range(temp, hum):
     # 3. Validación de rangos físicos
     # -----------------------------------------
     if temp < TEMP_MIN or temp > TEMP_MAX:
-        logging.error(f"Temperature out of range: {temp}°C")
+        logging.error("Temperature out of range: %s°C" % temp)
         return False
 
     if hum < HUM_MIN or hum > HUM_MAX:
-        logging.error(f"Humidity out of range: {hum}%")
+        logging.error("Humidity out of range: {}%".format(hum))
         return False
 
     return True

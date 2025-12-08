@@ -1,25 +1,30 @@
 import grovepi
-import logging
 from math import isnan
 from config import DHT_PORT, DHT_TYPE, logger
+from sistema.sensor_errors import validate_not_none, validate_range
 
 def read():
-    
     try:
-        # Leer datos del sensor DHT
+        # 1. Lectura cruda del sensor
         temp, hum = grovepi.dht(DHT_PORT, DHT_TYPE)
 
-        # Validar los datos leídos
-        if temp is None or hum is None:
+        # 2. Validación de None / valores incompletos
+        if not validate_not_none([temp, hum]):
+            logger.warning("Lectura descartada: None o incompleta")
             return None, None
-        
-        # Comprobar si los valores son NaN (vacíos)
+
+        # 3. Validación NaN
         if isnan(temp) or isnan(hum):
+            logger.warning("Lectura descartada: valores NaN")
+            return None, None
+
+        # 4. Validación de rango físico
+        if not validate_range(temp, hum):
+            logger.warning("Lectura descartada: fuera de rango físico")
             return None, None
 
         return temp, hum
-    
-    # Manejar excepciones específicas del sensor
+
     except Exception as e:
-        logger.error("Error leyendo el sensor DHT")
+        logger.error("Error leyendo el sensor DHT: {}".format(e))
         return None, None

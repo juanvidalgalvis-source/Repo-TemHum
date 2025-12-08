@@ -4,6 +4,11 @@ Prueba básica de conexión desde Python hacia MariaDB.
 """
 
 import mariadb
+import sys
+import os
+
+# Agregar el directorio padre al path para importar config
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import config
 
 def test_connection():
@@ -18,12 +23,12 @@ def test_connection():
             port=config.DB_PORT
         )
 
-        print("✅ Conexión exitosa a MariaDB.")
+        print("Conexion exitosa a MariaDB.")
         conn.close()
-        print("🔒 Conexión cerrada correctamente.")
+        print("Conexión cerrada correctamente.")
 
     except mariadb.Error as e:
-        print("❌ Error al conectar a MariaDB:")
+        print("Error al conectar a MariaDB:")
         print(e)
 
 if __name__ == "__main__":
