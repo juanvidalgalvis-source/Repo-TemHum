@@ -2,33 +2,30 @@
 sensor_sim.py
 Módulo de simulación del sensor de temperatura y humedad.
 
-Este archivo genera valores ficticios dentro de rangos 
+Este archivo genera valores ficticios dentro de rangos
 realistas para trabajar sin hardware. (Raspberry + GrovePi).
+Solo genera datos, sin validaciones.
 """
 
 import random
 
 
-def get_fake_sensor_data():     # Retorna valores simulados de temperatura y humedad.
-#   Rango típico del sensor DHT11:
-#       Temperatura: 20°C – 30°C
-#       Humedad:     40% – 70%
+def get_fake_sensor_data():
+    """
+    Genera valores simulados del sensor.
+    Solo genera datos, sin validaciones ni excepciones controladas.
+    """
+    # Probabilidad del 10% de fallo
+    if random.random() < 0.10:
+        raise ValueError("Fallo simulado en el sensor DHT (modo simulación).")
 
-#   Genera valores simulados del sensor. 10% de probabilidad de generar un fallo.
-
-    if random.random() < 0.10: # Probabilidad del 10% de fallo
-        raise ValueError("Fallo simulado en el sensor DHT (modo simulación).") 
-
-#   Rango típico simulado
+    # Rango típico simulado
     temperatura = round(random.uniform(20.0, 30.0), 2)
     humedad = round(random.uniform(40.0, 70.0), 2)
-#Returns:   tuple: (temperatura, humedad)
     return temperatura, humedad
 
 
-# Alias para mantener consistencia con sensor_real.py
-def read_stable():
-    return get_fake_sensor_data()
+
 
 
 # # Para probarlo de forma independiente

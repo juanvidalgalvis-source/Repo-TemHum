@@ -29,7 +29,7 @@ DHT_PORT = 7    # Puerto del GrovePi donde está conectado el sensor DHT
 DHT_TYPE = 0    # Tipo de sensor ((azul) DHT11 = 0, (blanco) DHT22 = 1)
 
 # Intervalo entre lecturas (en segundos)
-INTERVALO_LECTURA = 3
+INTERVALO_LECTURA = 1
 
 
 # ================================
@@ -86,3 +86,24 @@ logging.basicConfig(
 
 # Logger global accesible desde TODOS los módulos
 logger = logging.getLogger("sensor_system")
+
+# ===========================================
+# LOGGER DE ERRORES (HU20.2)
+# ===========================================
+ERROR_LOG_FILE = "logs/errors.log"
+ERROR_LOG_LEVEL = logging.WARNING
+
+# Logger especializado para errores críticos
+error_logger = logging.getLogger("error_system")
+error_logger.setLevel(ERROR_LOG_LEVEL)
+
+# Handler para archivo de errores
+error_file_handler = logging.FileHandler(ERROR_LOG_FILE)
+error_file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+error_logger.addHandler(error_file_handler)
+
+# Handler para consola de errores (solo críticos)
+error_console_handler = logging.StreamHandler()
+error_console_handler.setLevel(logging.ERROR)
+error_console_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+error_logger.addHandler(error_console_handler)
